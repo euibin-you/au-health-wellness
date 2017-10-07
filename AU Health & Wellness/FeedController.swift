@@ -15,32 +15,15 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     @IBOutlet weak var tableView: UITableView!
     
-//    let cellIndex = Variable(0)
-//    let disposeBag = DisposeBag()
-    
     var postsCount = 0
     var posts: [Post] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.delegate = self
-//        tableView.dataSource = self
-        
-        //tableView.delegate = self
-        
-//        tableView.rx.setDelegate(self)
-//            .disposed(by: disposeBag)
-        
-//        cellIndex.asObservable()
-//            .debug("cellIndex")
-//            .subscribe(onNext: { index -> Void in
-//                index
-//            })
-//            .disposed(by: disposeBag)
         
         // Do any additional setup after loading the view, typically from a nib.
         let token = AccessToken(authenticationToken: "1878283485746837|QwNiq8_esarrttcDDB5M6sSlrVg")
-        let path = "aulivewholly/feed?fields=status_type,link,full_picture,message"
+        let path = "aulivewholly/feed?fields=status_type,link,full_picture,message,created_time,message_tags"
         GraphRequest(graphPath: path, accessToken: token).start { (_, graphRequestResult) in
             switch graphRequestResult {
             case .success(let response):
@@ -49,8 +32,6 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Failed with error: \(err).")
             }
         }
-        
-        //tableView.rowHeight = UITableViewAutomaticDimension
     }
 
     override func didReceiveMemoryWarning() {
@@ -151,16 +132,6 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
         postsCount = posts.count
         tableView.reloadData()
         print("\n\tcalled reload!\n")
-        
-        //let x = unparsedArr.map(<#T##transform: ([String : Any]) throws -> _##([String : Any]) throws -> _#>)
-        
-//        let dataSource = Observable.just(resultDict)
-//        dataSource.bind(to: tableView.rx.items(cellIdentifier: FeedCell.ReuseIdentifier,
-//                                               cellType: FeedCell.self))
-//                    { (_, model: PostModel, cell: FeedCell) in
-//                        //cell.postText.text = model["id"] as! String
-//                    }
-//                    .addDisposableTo(disposeBag)
     }
 
 }

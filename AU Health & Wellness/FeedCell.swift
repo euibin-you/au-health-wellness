@@ -29,8 +29,6 @@ final class FeedCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-//        print("prepareForReuse()")
-//        imageV.image = nil
     }
 
 }
