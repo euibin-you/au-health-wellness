@@ -9,25 +9,29 @@
 /* Begin PBXBuildFile section */
 		03B01AB2E54A25BF568FF402 /* Pods_AU_Health___Wellness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F6624E883BC0DBB4A9A1805 /* Pods_AU_Health___Wellness.framework */; };
 		9F1B8E4E1F86D6DE008CDCC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B8E4D1F86D6DE008CDCC8 /* AppDelegate.swift */; };
-		9F1B8E501F86D6DE008CDCC8 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B8E4F1F86D6DE008CDCC8 /* FirstViewController.swift */; };
+		9F1B8E501F86D6DE008CDCC8 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B8E4F1F86D6DE008CDCC8 /* FeedController.swift */; };
 		9F1B8E521F86D6DE008CDCC8 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B8E511F86D6DE008CDCC8 /* SecondViewController.swift */; };
 		9F1B8E551F86D6DE008CDCC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B8E531F86D6DE008CDCC8 /* Main.storyboard */; };
 		9F1B8E571F86D6DE008CDCC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B8E561F86D6DE008CDCC8 /* Assets.xcassets */; };
 		9F1B8E5A1F86D6DE008CDCC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B8E581F86D6DE008CDCC8 /* LaunchScreen.storyboard */; };
+		9FAE1F491F8830D8005EAE8F /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAE1F481F8830D8005EAE8F /* FeedCell.swift */; };
+		9FE6F1B31F8836370021C647 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE6F1B21F8836370021C647 /* PostModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3CAD449FB272BA6CE416CA13 /* Pods-AU Health & Wellness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AU Health & Wellness.release.xcconfig"; path = "Pods/Target Support Files/Pods-AU Health & Wellness/Pods-AU Health & Wellness.release.xcconfig"; sourceTree = "<group>"; };
-		8F6624E883BC0DBB4A9A1805 /* Pods_AU_Health___Wellness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AU_Health___Wellness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F6624E883BC0DBB4A9A1805 /* Pods_AU_Health___Wellness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Pods_AU_Health___Wellness.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BB8A1B8965D3CA92FC436C8 /* Pods-AU Health & Wellness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AU Health & Wellness.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AU Health & Wellness/Pods-AU Health & Wellness.debug.xcconfig"; sourceTree = "<group>"; };
 		9F1B8E4A1F86D6DD008CDCC8 /* AU Health & Wellness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AU Health & Wellness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F1B8E4D1F86D6DE008CDCC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9F1B8E4F1F86D6DE008CDCC8 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		9F1B8E4F1F86D6DE008CDCC8 /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		9F1B8E511F86D6DE008CDCC8 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		9F1B8E541F86D6DE008CDCC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9F1B8E561F86D6DE008CDCC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F1B8E591F86D6DE008CDCC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F1B8E5B1F86D6DE008CDCC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FAE1F481F8830D8005EAE8F /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		9FE6F1B21F8836370021C647 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,12 +77,14 @@
 			isa = PBXGroup;
 			children = (
 				9F1B8E4D1F86D6DE008CDCC8 /* AppDelegate.swift */,
-				9F1B8E4F1F86D6DE008CDCC8 /* FirstViewController.swift */,
+				9F1B8E4F1F86D6DE008CDCC8 /* FeedController.swift */,
 				9F1B8E511F86D6DE008CDCC8 /* SecondViewController.swift */,
 				9F1B8E531F86D6DE008CDCC8 /* Main.storyboard */,
 				9F1B8E561F86D6DE008CDCC8 /* Assets.xcassets */,
 				9F1B8E581F86D6DE008CDCC8 /* LaunchScreen.storyboard */,
 				9F1B8E5B1F86D6DE008CDCC8 /* Info.plist */,
+				9FAE1F481F8830D8005EAE8F /* FeedCell.swift */,
+				9FE6F1B21F8836370021C647 /* PostModel.swift */,
 			);
 			path = "AU Health & Wellness";
 			sourceTree = "<group>";
@@ -229,8 +235,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F1B8E521F86D6DE008CDCC8 /* SecondViewController.swift in Sources */,
+				9FE6F1B31F8836370021C647 /* PostModel.swift in Sources */,
+				9FAE1F491F8830D8005EAE8F /* FeedCell.swift in Sources */,
 				9F1B8E4E1F86D6DE008CDCC8 /* AppDelegate.swift in Sources */,
-				9F1B8E501F86D6DE008CDCC8 /* FirstViewController.swift in Sources */,
+				9F1B8E501F86D6DE008CDCC8 /* FeedController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
