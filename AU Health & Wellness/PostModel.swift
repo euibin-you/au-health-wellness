@@ -10,9 +10,34 @@ import Foundation
 import UIKit
 
 struct Post {
-    let text: String
+    // TODO: add id?
+    let text: String?
+    let tags: [String]?
     var image: UIImage?
     let imageUrl: String?
+    
+    init()
+    {
+        self.init(text: nil, tags: nil, image: nil, imageUrl: nil)
+    }
+    
+    init(text: String?, imageUrl: String?)
+    {
+        self.init(text: text, tags: nil, image: nil, imageUrl: imageUrl)
+    }
+    
+    init(text: String?, tags: [String]?, imageUrl: String?)
+    {
+        self.init(text: text, tags:tags, image: nil, imageUrl: imageUrl)
+    }
+    
+    init(text: String?, tags: [String]?, image: UIImage?, imageUrl: String?)
+    {
+        self.text = text
+        self.tags = tags
+        self.image = image
+        self.imageUrl = imageUrl
+    }
     
     func toString() -> String
     {
@@ -21,10 +46,10 @@ struct Post {
             case nil:
                 str += "no text"
             default:
-                str += text
+                str += text!
         }
-        str += "\n\tImage: "
         
+        str += "\n\tImage: "
         switch image {
             case nil:
                 str += "no image"
