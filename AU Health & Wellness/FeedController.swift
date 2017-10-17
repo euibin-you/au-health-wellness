@@ -11,14 +11,15 @@ import RxCocoa
 import RxSwift
 import FacebookCore
 
-// TODO: remove page tags from message (what about tags in middle of content?)
-// TODO: change message to UILabel and use attributed text to style #hashtag(blue) and in-content tags (bold)
+
+// TODO: custom seperator
+
+// TODO: open details for regular posts (time, ?)
 // TODO: open webview for linked posts
-// TODO: open details for regular posts
+
 // TODO: implement notifications viewer
 // TODO: pull to refresh
 // TODO: load more when user scrolls to bottom
-// TODO: custom seprator
 
 class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -36,7 +37,7 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
         GraphRequest(graphPath: path, accessToken: token).start { (_, graphRequestResult) in
             switch graphRequestResult {
             case .success(let response):
-                self.onGraphResult(response.dictionaryValue!)
+                self.onGraphResult(response.dictionaryValue)
             case .failed(let err):
                 print("Failed with error: \(err).")
             }
@@ -68,7 +69,8 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if (rowInd < posts.count) {
             print("Loading post, ind=#\(rowInd)..")
             let post = posts[rowInd]
-            cell.textV.text = post.text
+            print(post)
+            cell.messageL.attributedText = formatMessage(post.message, post.tags)
             guard let url = post.imageUrl else {
                 print("No image url associated with this post (ind=\(rowInd))")
                 cell.imageV.image = nil
@@ -82,7 +84,7 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return cell
         }
         print("Loading placeholder, ind=#\(rowInd)")
-        cell.textV.text = "Loading.."
+        cell.messageL.attributedText = NSAttributedString(string: "Loading..", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         print("\t..done. (ind=#\(rowInd))")
         return cell
     }
@@ -91,10 +93,70 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
         print("Cell ind=\(indexPath.row) selected.")
     }
     
+    func tableView(_: UITableView, shouldHighlightRowAt: IndexPath) -> Bool {
+        return true
+    }
+    
+    private func onGraphResult(_ resultDict: [String: Any]?)
+    {
+        guard let resultDict = resultDict else { fatalError("No data! (repsonse.dictionaryValue)") }
+        guard let unparsedArr = resultDict["data"] as? [[String:Any]] else { fatalError("No data! (response.dictionaryValue[\"data\"])") }
+        print("Full data payload: \(unparsedArr)")
+        
+        for post in unparsedArr
+        {
+            let id = post["id"] as? String
+            let message = post["message"] as? String
+            let tags = post["message_tags"] as? [[String: Any?]]
+            let imageURL = post["full_picture"] as? String
+            posts.append(Post(id: id, text: message, tags: tags, imageUrl: imageURL))
+            print("\t\(posts.last!.toString())\n")
+        }
+        
+        postsCount = posts.count
+        tableView.reloadData()
+        print("\n\tcalled reload!\n")
+    }
+    
+    // style #hashtag with blue color, in-content tags with bold grey, other tags with white on light grey background
+    private func formatMessage(_ message: String?, _ tags: [[String: Any?]]?) -> NSMutableAttributedString {
+        guard let message = message else { return NSMutableAttributedString() }
+        let mutableAttributedString = NSMutableAttributedString(string: message)
+        guard let tags = tags else { return mutableAttributedString }
+        
+//        let pStyle = NSMutableParagraphStyle()
+//        pStyle.lineSpacing = 12.0
+//        mutableAttributedString.addAttributes([NSAttributedStringKey.paragraphStyle: pStyle], range: NSMakeRange(0, message.count))
+        
+        // find hashtags
+        var hashtagIndicesArr: SubstringIndices2
+        do {
+            let hashtagRegExp = try NSRegularExpression(pattern:"#\\w+")
+            
+            let matches = hashtagRegExp.matches(in: message, options: [], range: NSMakeRange(0, message.utf16.count))
+            
+            hashtagIndicesArr = matches.map { match in (match.range.location, match.range.length) }
+        } catch {
+            fatalError("invalid regular expression")
+        }
+        
+        // apply styling to hashtags
+        let hashtagStyle = [NSAttributedStringKey.foregroundColor: UIColor.init(red:0.2, green:0.4, blue:0.9, alpha:1.0)]
+        for hashtagIndices in hashtagIndicesArr {
+            mutableAttributedString.addAttributes(hashtagStyle, range: NSMakeRange(hashtagIndices.location, hashtagIndices.length))
+        }
+        
+        // apply styling to tags
+        let tagStyle = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.backgroundColor: UIColor.init(white:0.9, alpha: 1.0)]
+        for tag in tags { mutableAttributedString.addAttributes(tagStyle, range: message.rangeFromUtf32Indices(tag["offset"], tag["length"])) }
+        
+        return mutableAttributedString
+    }
+    
     private func loadPicture(_ cell: FeedCell, _ ind: IndexPath, _ url: String, _ width: CGFloat)
     {
-        let task = URLSession.shared.dataTask(with: URL(string: url)!) {(data, response, error) in
-//            print("Response=\(response.debugDescription)")
+        let task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
+            //            print("Response=\(response.debugDescription)")
             guard let response = response else {
                 print("response is nil!\nError: \(error.debugDescription)")
                 return
@@ -105,6 +167,7 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 return
             }
             print("start loading picture (ind=\(ind.row)..")
+            // refactor this out into a function
             let img = UIImage(data: payload)!
             let cgImage = img.cgImage!
             let oldWidth = img.size.width
@@ -128,31 +191,14 @@ class FeedController: UIViewController, UITableViewDelegate, UITableViewDataSour
             DispatchQueue.main.async {
                 print("main.async: calling reloadData..")
                 self.tableView.reloadData()
-//                if (ind.row == 8){ self.tableView.selectRow(at: ind, animated: true, scrollPosition: UITableViewScrollPosition.middle) }
+                // if (ind.row == 8){ self.tableView.selectRow(at: ind, animated: true, scrollPosition: UITableViewScrollPosition.middle) }
                 print("\t..done (main.async).")
-//                self.tableView.beginUpdates()
-//                self.tableView.reloadRows(at: [ind], with: UITableViewRowAnimation(rawValue: 6)!)
-//                self.tableView.endUpdates()
+                // self.tableView.beginUpdates()
+                // self.tableView.reloadRows(at: [ind], with: UITableViewRowAnimation(rawValue: 6)!)
+                // self.tableView.endUpdates()
             }
         }
         task.resume()
     }
-    
-    private func onGraphResult(_ resultDict: [String: Any])
-    {
-        let unparsedArr = resultDict["data"] as! [[String:Any]]
-        print("Full data payload: \(unparsedArr)")
-        
-        for post in unparsedArr
-        {
-            posts.append(Post(text: post["message"] as? String, imageUrl: post["full_picture"] as? String))
-            print("\t\(posts.last!.toString())\n")
-        }
-        
-        postsCount = posts.count
-        tableView.reloadData()
-        print("\n\tcalled reload!\n")
-    }
 
 }
-

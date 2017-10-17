@@ -10,10 +10,8 @@ import UIKit
 
 final class FeedCell: UITableViewCell {
 
-    
-    @IBOutlet weak var textV: UITextView!
+    @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var imageV: UIImageView!
-    
     
     static let ReuseIdentifier = "FeedCell"
     

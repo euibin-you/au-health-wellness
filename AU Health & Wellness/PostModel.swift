@@ -10,30 +10,31 @@ import Foundation
 import UIKit
 
 struct Post {
-    // TODO: add id?
-    let text: String?
-    let tags: [String]?
+    let id: String?
+    let message: String?
+    let tags: [[String: Any?]]?
     var image: UIImage?
     let imageUrl: String?
     
     init()
     {
-        self.init(text: nil, tags: nil, image: nil, imageUrl: nil)
+        self.init(id: nil, text: nil, tags: nil, image: nil, imageUrl: nil)
     }
     
-    init(text: String?, imageUrl: String?)
+    init(id: String?, text: String?, imageUrl: String?)
     {
-        self.init(text: text, tags: nil, image: nil, imageUrl: imageUrl)
+        self.init(id: id, text: text, tags: nil, image: nil, imageUrl: imageUrl)
     }
     
-    init(text: String?, tags: [String]?, imageUrl: String?)
+    init(id: String?, text: String?, tags: [[String: Any?]]?, imageUrl: String?)
     {
-        self.init(text: text, tags:tags, image: nil, imageUrl: imageUrl)
+        self.init(id: id, text: text, tags:tags, image: nil, imageUrl: imageUrl)
     }
     
-    init(text: String?, tags: [String]?, image: UIImage?, imageUrl: String?)
+    init(id:String?, text: String?, tags: [[String: Any?]]?, image: UIImage?, imageUrl: String?)
     {
-        self.text = text
+        self.id = id
+        self.message = text
         self.tags = tags
         self.image = image
         self.imageUrl = imageUrl
@@ -41,21 +42,41 @@ struct Post {
     
     func toString() -> String
     {
-        var str = "Text: "
-        switch text {
+        var str = "Message: "
+        switch message {
             case nil:
                 str += "no text"
             default:
-                str += text!
+                str += message!
         }
         
-        str += "\n\tImage: "
+        str += "\n\tImage URL: "
+        switch imageUrl {
+            case nil:
+                str += "no image url"
+            default:
+                str += imageUrl!
+        }
+        
+        str += "\n\tImage downloaded? "
         switch image {
             case nil:
-                str += "no image"
+                str += "false"
             default:
-                str += "image exists"
+                str += "true"
         }
+        
+        str += "\n\tTags: "
+        switch tags {
+            case nil:
+                str += "no tags"
+            default:
+                for tag in tags! {
+                    let title = tag["name"] as! String
+                    str += "\(title), "
+                }
+        }
+        //str = String(Substring(str).prefix(upTo: String.Index(encodedOffset: str.count-1)))
         
         return str
     }
